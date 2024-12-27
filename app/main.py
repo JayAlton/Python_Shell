@@ -15,7 +15,7 @@ def find_executable(command) -> Optional[str]:
     return None
 
 def handle_pwd(args):
-    print(f"{os.getcwd()}\n")
+    print(f"{os.getcwd()}")
 
 def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
