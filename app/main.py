@@ -1,5 +1,4 @@
-import sys
-import 
+import sys 
 
 def main():
     while True:
