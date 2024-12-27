@@ -14,6 +14,9 @@ def find_executable(command) -> Optional[str]:
             return file_path
     return None
 
+def handle_pwd(args):
+    print(f"{os.getcwd()}\n")
+
 def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
@@ -28,7 +31,7 @@ def handle_type(args):
     else:
         print(f"{args[0]}: not found")
 
-builtins = { "exit": handle_exit, "echo": handle_echo, "type": handle_type}
+builtins = { "exit": handle_exit, "echo": handle_echo, "type": handle_type, "pwd": handle_pwd }
 
 def main():
     while True:
