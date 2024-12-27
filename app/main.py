@@ -1,4 +1,6 @@
 import sys 
+from os import getenv, getcwd, chdir
+from os.path import basename, expanduser
 import os
 import subprocess
 
@@ -31,7 +33,14 @@ def handle_type(args):
     else:
         print(f"{args[0]}: not found")
 
-builtins = { "exit": handle_exit, "echo": handle_echo, "type": handle_type, "pwd": handle_pwd }
+def handle_cd(args):
+    dir = args[0]
+    try:
+        chdir(expanduser(dir))
+    except OSError:
+        print(f"cd: {dir}: no such file or directory")
+
+builtins = { "exit": handle_exit, "echo": handle_echo, "type": handle_type, "pwd": handle_pwd, "cd": handle_cd }
 
 def main():
     while True:
