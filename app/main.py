@@ -32,9 +32,7 @@ def main():
                 print(f"{args[1]}: not found")          
         else:
             print(f"{userInput}: command not found")
-        
-        sys.stdout.flush()
-
+    
 
 
 if __name__ == "__main__":
