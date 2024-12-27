@@ -4,15 +4,26 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
+        commands = {"exit", "echo", "type"}
 
+        
         # Wait for user input
-        command = input()
-        if (command == "exit 0"):
+        userInput = input()
+        if (userInput == "exit 0"):
             sys.exit(0)
-        elif (command.startswith("echo ")):
-            print(command[len("echo ") :])
+        elif (userInput.startswith("echo ")):
+            print(userInput[len("echo ") :])
+        elif (userInput.startswith("type ")):
+            exists = False
+            for i in commands:
+                if(userInput[len("type ") :] == commands[i]):
+                    print(f"{commands[i]} is a shell builtin")
+                    exists = True
+            if (exists == False):
+                print(userInput[len("type ") :] + ": not found")            
+            
         else:
-            print(f"{command}: command not found")
+            print(f"{userInput}: command not found")
 
 
 
