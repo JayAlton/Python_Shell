@@ -14,14 +14,11 @@ def main():
         elif (userInput.startswith("echo ")):
             print(userInput[len("echo ") :])
         elif (userInput.startswith("type ")):
-            exists = False
-            for i in commands:
-                if(userInput[len("type ") :] == commands[i]):
-                    print(f"{commands[i]} is a shell builtin")
-                    exists = True
-            if (exists == False):
-                print(userInput[len("type ") :] + ": not found")            
-            
+            args = userInput.split()
+            if len(args) == 2 and args[1] in commands:
+                print(f"{args[1]} is a shell builtin")
+            else:
+                print(f"{args[1]}: not found")          
         else:
             print(f"{userInput}: command not found")
 
