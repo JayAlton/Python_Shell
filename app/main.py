@@ -4,10 +4,10 @@ import subprocess
 
 from typing import Optional
 
-def find_executable(command, path):
+def find_executable(command) -> Optional[str]:
     PATH = os.environ.get("PATH", "")
-
-    directories = path.split(":")
+    directories = PATH.split(":")
+    
     for dir in directories:
         file_path = os.path.join(dir, command)
         if os.path.isfile(file_path) and os.access(file_path, os.X_OK):
