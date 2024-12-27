@@ -1,9 +1,17 @@
 import sys 
 import os
+import shutil
 
+def find_executable(command, path):
+    directories = path.split(":")
+    for dir in directories:
+        file_path = os.path.join(dir, command)
+        if os.path.isfile(file_path) and os.access(file_path, os.X_OK):
+            return file_path
+    return None
 def main():
     commands = {"exit", "echo", "type"}
-    PATH = os.environ.get("PATH")
+    PATH = os.environ.get("PATH", "")
     
     while True:
         sys.stdout.write("$ ")
@@ -18,21 +26,22 @@ def main():
             print(userInput[len("echo ") :])
         
         elif (userInput.startswith("type ")):
-            args = userInput.split(" ")[1]
-            cmd_path = None
-            paths = PATH.split(":")
-            for path in paths:
-                if os.path.isfile(f"{path}/{args}"):
-                    cmd_path = f"{path}/{args}"
-            if args in commands:
-                print(f"{args[1]} is a shell builtin")
-            elif cmd_path:
-                print(f"{args} is {cmd_path}\n")
+            args = userInput.split()
+            if len(args) == 2:
+                if args[1] in commands:
+                    print(f"{args[1]} is a shell builtin")
+                else:
+                    executable_path = find_executable(args[1], PATH)
+                    if executable_path:
+                        print(f"{args[1]} is {executable_path}")
+                    else:
+                        print(f"{args[1]}: not found")
             else:
-                print(f"{args[1]}: not found")          
+                print(f"type: expected a command")          
+        
         else:
             print(f"{userInput}: command not found")
-    
+
 
 
 if __name__ == "__main__":
