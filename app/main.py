@@ -54,7 +54,9 @@ def main():
         sys.stdout.write("$ ")
         sys.stdout.flush()
         # Wait for user input
-        userInput, *args = input().split(" ")
+        userInput = input()
+        tokens = shlex.split(userInput)
+        userInput, *args = tokens
 
         if userInput in builtins:
             builtins[userInput](args)
