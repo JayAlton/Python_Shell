@@ -28,7 +28,7 @@ def handle_echo(args):
         args = " ".join(args)
     args = shlex.split(args)
     for i in range(len(args)):
-        if (args.startswith("'") and args.endswith("'")) or (args.startswith('"') and args.endswith('"')):
+        if (args[i].startswith("'") and args[i].endswith("'")) or (args[i].startswith('"') and args[i].endswith('"')):
             args[i] = args[i][1:-1]
     print(" ".join(args))
 
