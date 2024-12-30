@@ -33,11 +33,10 @@ def handle_echo(args):
     in_doubleQuotes = False
     in_singleQuotes = False
     quote_char = ""
-
+    print(args)
     for char in args:
         if char in ("'"):  # Check for the start/end of quotes
             if in_singleQuotes and char == quote_char:
-                print(char)
                 in_singleQuotes = False
                 result.append(''.join(current))
                 current = []
