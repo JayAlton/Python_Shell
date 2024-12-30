@@ -26,13 +26,14 @@ def handle_exit(args):
 def handle_echo(args):
     if isinstance(args, list):
         args = " ".join(args)
-    args = shlex.split(args)
-    for i in range(len(args)):
-        if (args[i].startswith("'") and args[i].endswith("'")) or (args[i].startswith('"') and args[i].endswith('"')):
-            args[i] = args[i][1:-1]
+    args = shlex.split(args, posix=True)
+    result = []
+    for i in args:
+        if (i.startswith("'") and i.endswith("'")) or (i.startswith('"') and i.endswith('"')):
+            result.append(i[1:-1])
         else:
-            args[i] = args[i]
-    print(" ".join(args))
+            result.append(i)
+    print(" ".join(result))
 
 def handle_type(args):
     if args[0] in builtins:
