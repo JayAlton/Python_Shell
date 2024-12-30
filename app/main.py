@@ -24,15 +24,22 @@ def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
 def handle_echo(args):
+    # Join the list into a single string if it's a list
     if isinstance(args, list):
         args = " ".join(args)
-    result = []
-    for i in args:
-        if (i.startswith("'") and i.endswith("'")) or (i.startswith('"') and i.endswith('"')):
-            result.append(i[1:-1])
-        else:
-            result.append(i)
-    print(" ".join(shlex.split(result)))
+
+    # Split the arguments while preserving quoted sections as a whole
+    split_args = shlex.split(args)
+    
+    # Remove surrounding quotes from arguments if they exist
+    for i in range(len(split_args)):
+        if (split_args[i].startswith("'") and split_args[i].endswith("'")) or (
+            split_args[i].startswith('"') and split_args[i].endswith('"')
+        ):
+            split_args[i] = split_args[i][1:-1]  # Remove surrounding quotes
+
+    # Join the processed arguments back with a single space and print
+    print(" ".join(split_args))
 
 def handle_type(args):
     if args[0] in builtins:
