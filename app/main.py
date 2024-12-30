@@ -24,6 +24,7 @@ def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
 def handle_echo(args):
+    args = shlex.split(args)
     for i in range(len(args)):
         if (args.startswith("'") and args.endswith("'")) or (args.startswith('"') and args.endswith('"')):
             args[i] = args[i][1:-1]
@@ -51,8 +52,12 @@ def main():
         sys.stdout.write("$ ")
         sys.stdout.flush()
         # Wait for user input
-        userInput, *args = input().split(" ")
-
+        line = input()
+        try:
+            userInput, args = line.split(maxsplit=1)
+        except:
+            userInput = line
+            
         if userInput in builtins:
             builtins[userInput](args)
             continue
