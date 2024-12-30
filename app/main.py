@@ -33,7 +33,6 @@ def handle_echo(args):
     in_quotes = False
     quote_char = ""
 
-    # Iterate through each character in the string
     for char in args:
         if char in ("'", '"'):  # Check for the start/end of quotes
             if in_quotes and char == quote_char:
