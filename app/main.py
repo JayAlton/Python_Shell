@@ -27,19 +27,37 @@ def handle_echo(args):
     # Join the list into a single string if it's a list
     if isinstance(args, list):
         args = " ".join(args)
-
-    # Split the arguments while preserving quoted sections as a whole
-    split_args = shlex.split(args)
     
-    # Remove surrounding quotes from arguments if they exist
-    for i in range(len(split_args)):
-        if (split_args[i].startswith("'") and split_args[i].endswith("'")) or (
-            split_args[i].startswith('"') and split_args[i].endswith('"')
-        ):
-            split_args[i] = split_args[i][1:-1]  # Remove surrounding quotes
+    result = []
+    current = []
+    in_quotes = False
+    quote_char = ""
 
-    # Join the processed arguments back with a single space and print
-    print(" ".join(split_args))
+    # Iterate through each character in the string
+    for char in args:
+        if char in ("'", '"'):  # Check for the start/end of quotes
+            if in_quotes and char == quote_char:
+                in_quotes = False
+                result.append(''.join(current))
+                current = []
+            elif not in_quotes:
+                in_quotes = True
+                quote_char = char
+            else:
+                current.append(char)
+        elif char == " " and not in_quotes:  # Handle spaces outside quotes
+            if current:
+                result.append(''.join(current))
+                current = []
+        else:
+            current.append(char)
+
+    if current:  # Add the last part if exists
+        result.append(''.join(current))
+
+    # Join everything with a space between the tokens
+    print(" ".join(result))
+
 
 def handle_type(args):
     if args[0] in builtins:
