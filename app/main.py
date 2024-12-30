@@ -49,6 +49,7 @@ def handle_echo(args):
             if current:
                 result.append(''.join(current))
                 current = []
+            result.append(" ")  # Add a space to maintain the spacing
         else:
             current.append(char)
 
@@ -56,7 +57,8 @@ def handle_echo(args):
         result.append(''.join(current))
 
     # Join everything with a space between the tokens
-    print(" ".join(result))
+    print("".join(result))
+
 
 
 def handle_type(args):
