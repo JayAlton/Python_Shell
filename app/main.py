@@ -24,6 +24,8 @@ def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
 def handle_echo(args):
+    if isinstance(args, list):
+        args = " ".join(args)
     result = []
     for i in args:
         if (i.startswith("'") and i.endswith("'")) or (i.startswith('"') and i.endswith('"')):
