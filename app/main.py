@@ -23,7 +23,11 @@ def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
 def handle_echo(args):
-    print(" ".join(args))
+    if (args.startswith("'") and args.endswith("'")):
+        message = args[6:-1]
+    else:
+        message = (" ".join(args))
+    print(message)
 
 def handle_type(args):
     if args[0] in builtins:
