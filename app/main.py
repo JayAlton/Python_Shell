@@ -30,22 +30,35 @@ def handle_echo(args):
     
     result = []
     current = []
-    in_quotes = False
+    in_doubleQuotes = False
+    in_singleQuotes = False
     quote_char = ""
 
-    # Iterate through each character in the string
     for char in args:
-        if char in ("'", '"'):  # Check for the start/end of quotes
-            if in_quotes and char == quote_char:
-                in_quotes = False
+        if char in ("'"):  # Check for the start/end of quotes
+            if in_singleQuotes and char == quote_char:
+                in_singleQuotes = False
                 result.append(''.join(current))
                 current = []
-            elif not in_quotes:
-                in_quotes = True
+            elif in_doubleQuotes:
+                result.append(''.join(current))
+                current = []
+            elif not in_singleQuotes:
+                in_singleQuotes = True
                 quote_char = char
             else:
                 current.append(char)
-        elif char == " " and not in_quotes:  # Handle spaces outside quotes
+        elif char in ('"'):
+            if in_doubleQuotes and char == quote_char:
+                in_doubleQuotes = False
+                result.append(''.join(current))
+                current = []
+            elif not in_doubleQuotes:
+                in_doubleQuotes = True
+                quote_char = char
+            else:
+                current.append(char)
+        elif char == " " and not (in_singleQuotes or in_doubleQuotes):  # Handle spaces outside quotes
             if current:
                 result.append(''.join(current))
                 current = []
@@ -58,6 +71,7 @@ def handle_echo(args):
 
     # Join everything with a space between the tokens
     print("".join(result))
+
 
 
 def handle_type(args):
