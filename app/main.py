@@ -1,6 +1,6 @@
 import sys 
-from os import getenv, getcwd, chdir
-from os.path import basename, expanduser
+from os import chdir
+from os.path import expanduser
 import os
 import subprocess
 
