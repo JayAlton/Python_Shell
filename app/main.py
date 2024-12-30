@@ -30,6 +30,8 @@ def handle_echo(args):
     for i in range(len(args)):
         if (args[i].startswith("'") and args[i].endswith("'")) or (args[i].startswith('"') and args[i].endswith('"')):
             args[i] = args[i][1:-1]
+        else:
+            args[i] = args[i]
     print(" ".join(args))
 
 def handle_type(args):
