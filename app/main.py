@@ -2,6 +2,7 @@ import sys
 from os import chdir
 from os.path import expanduser
 import os
+import shlex
 import subprocess
 
 from typing import Optional
@@ -23,11 +24,11 @@ def handle_exit(args):
     sys.exit(int(args[0]) if args else 0)
 
 def handle_echo(args):
-    if (args.startswith("'") and args.endswith("'")):
-        message = args[6:-1]
-    else:
-        message = (" ".join(args))
-    print(message)
+    args = shlex.split(args)
+    for i in range(len(args)):
+        if (args.startswith("'") and args.endswith("'")) or (args.startswith('"') and args.endswith('"')):
+            args[i] = args[i][1:-1]
+    print(" ".join(args))
 
 def handle_type(args):
     if args[0] in builtins:
