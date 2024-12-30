@@ -38,7 +38,7 @@ def handle_cd(args):
     try:
         chdir(expanduser(dir))
     except OSError:
-        print(f"cd: {dir}: no such file or directory")
+        print(f"cd: {dir}: No such file or directory")
 
 builtins = { "exit": handle_exit, "echo": handle_echo, "type": handle_type, "pwd": handle_pwd, "cd": handle_cd }
 
