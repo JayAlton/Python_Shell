@@ -22,6 +22,26 @@ def main():
             if not args:
                 continue  # Skip empty commands
 
+            # Check for the 1> operator
+            if "1>" in args:
+                # Split the arguments into the command string and redirection part
+                redirect_index = args.index("1>")
+                cmd_string = " ".join(args[:redirect_index])  # Command string
+                output_file = args[redirect_index + 1] if redirect_index + 1 < len(args) else None
+
+                if not output_file:
+                    print("syntax error: unexpected end of file")
+                    continue
+
+                # Write the command string to the specified file
+                try:
+                    with open(output_file, "w") as file:
+                        file.write(cmd_string + "\n")
+                except Exception as e:
+                    print(f"Error writing to {output_file}: {e}")
+                continue
+
+
             # Check for output redirection
             if ">" in args:
                 # Split the arguments into the command part and redirection part
