@@ -36,6 +36,8 @@ def main():
                 try:
                     with open(output_file, "w") as file:
                         result = subprocess.run(cmd_args, stdout=file, stderr=subprocess.PIPE, text=True)
+                        if result.stderr:  # Print any errors to stderr
+                            sys.stderr.write(result.stderr)
                 except FileNotFoundError:
                     print(f"{cmd_args[0]}: command not found")
                 except PermissionError:
@@ -43,7 +45,7 @@ def main():
                 except Exception as e:
                     print(f"Error: {e}")
                 continue
-
+            
             # Check for the `1>` operator
             if "1>" in args:
                 redirect_index = args.index("1>")
