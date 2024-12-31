@@ -18,9 +18,28 @@ def main():
 
             # Parse input to handle quotes (both single and double)
             args = shlex.split(command, posix=True)
-
+            
             if not args:
                 continue  # Skip empty commands
+
+            # Check for output redirection
+            if ">" in args:
+                # Split the arguments into the command part and redirection part
+                redirect_index = args.index(">")
+                cmd_args = args[:redirect_index]  # Command and its arguments
+                output_file = args[redirect_index + 1] if redirect_index + 1 < len(args) else None
+
+                if not output_file:
+                    print("syntax error: unexpected end of file")
+                    continue
+
+                # Open the file for writing (truncate if exists)
+                with open(output_file, "w") as file:
+                    # Run the command and redirect output to the file
+                    result = subprocess.run(cmd_args, stdout=file, stderr=subprocess.PIPE, text=True)
+                    if result.stderr:
+                        print(result.stderr.strip(), file=sys.stderr)
+                continue
 
             cmd = args[0]
 
