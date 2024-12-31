@@ -36,9 +36,9 @@ def main():
                 try:
                     with open(output_file, "a") as file:
                         result = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                        file.write(result.stdout)  # Append stdout to the file
-                        if result.stderr:  # Print any errors to stderr
-                            sys.stderr.write(result.stderr)
+                        file.write(result.stderr)  # Append stderr to the file
+                        if result.stdout:  # Print any errors to stdout
+                            sys.stdout.write(result.stdout)
                 except FileNotFoundError:
                     print(f"{cmd_args[0]}: command not found")
                 except PermissionError:
