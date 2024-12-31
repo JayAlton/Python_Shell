@@ -22,23 +22,28 @@ def main():
             if not args:
                 continue  # Skip empty commands
 
-            # Check for the 1> operator
+            # Check for the `1>` operator
             if "1>" in args:
-                # Split the arguments into the command string and redirection part
                 redirect_index = args.index("1>")
-                cmd_string = " ".join(args[:redirect_index])  # Command string
+                cmd_args = args[:redirect_index]  # Command and its arguments
                 output_file = args[redirect_index + 1] if redirect_index + 1 < len(args) else None
 
-                if not output_file:
+                if not cmd_args or not output_file:
                     print("syntax error: unexpected end of file")
                     continue
 
-                # Write the command string to the specified file
+                # Execute the command and redirect output
                 try:
                     with open(output_file, "w") as file:
-                        file.write(cmd_string + "\n")
+                        result = subprocess.run(cmd_args, stdout=file, stderr=subprocess.PIPE, text=True)
+                        if result.stderr:  # Print any errors to stderr
+                            sys.stderr.write(result.stderr)
+                except FileNotFoundError:
+                    print(f"{cmd_args[0]}: command not found")
+                except PermissionError:
+                    print(f"Permission denied: {output_file}")
                 except Exception as e:
-                    print(f"Error writing to {output_file}: {e}")
+                    print(f"Error: {e}")
                 continue
 
 
