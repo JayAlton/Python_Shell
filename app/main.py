@@ -22,6 +22,31 @@ def main():
             if not args:
                 continue  # Skip empty commands
 
+            # Check for the '2>>' operator
+            if "2>>" in args:
+                redirect_index = args.index("2>>")
+                cmd_args = args[:redirect_index]  # Command and its arguments
+                output_file = args[redirect_index + 1] if redirect_index + 1 < len(args) else None
+
+                if not cmd_args or not output_file:
+                    print("syntax error: unexpected end of file")
+                    continue
+
+                # Execute the command and append stdout to the file
+                try:
+                    with open(output_file, "a") as file:
+                        result = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                        file.write(result.stdout)  # Append stdout to the file
+                        if result.stderr:  # Print any errors to stderr
+                            sys.stderr.write(result.stderr)
+                except FileNotFoundError:
+                    print(f"{cmd_args[0]}: command not found")
+                except PermissionError:
+                    print(f"Permission denied: {output_file}")
+                except Exception as e:
+                    print(f"Error: {e}")
+                continue
+
             # Check for the '>>' or '1>>' operator
             if ">>" in args or "1>>" in args:
                 # Normalize the operator to '>>' for simplicity
