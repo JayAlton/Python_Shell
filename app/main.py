@@ -35,9 +35,9 @@ def main():
                 # Execute the command and redirect output
                 try:
                     with open(output_file, "w") as file:
-                        result = subprocess.run(cmd_args, stdout=file, stderr=subprocess.PIPE, text=True)
-                        if result.stderr:  # Print any errors to stderr
-                            sys.stderr.write(result.stderr)
+                        result = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=file, text=True)
+                        if result.stdout:  # Print any errors to stderr
+                            print(result.stdout.strip())
                 except FileNotFoundError:
                     print(f"{cmd_args[0]}: command not found")
                 except PermissionError:
